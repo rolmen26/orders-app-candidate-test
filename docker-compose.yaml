@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: orders-app
+    ports:
+      - "${APP_PORT:-8000}:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./:/app
+    env_file:
+      - .env
+    networks:
+      - "orders-network"
+
+  vite:
+    image: node:22.12.0-alpine3.21
+    container_name: orders-vite
+    working_dir: /app
+    command:
+      - sh
+      - -c
+      - |
+        npm install
+        npm run dev -- --host 0.0.0.0 --port 5173
+    ports:
+      - "5173:5173"
+    volumes:
+      - "./:/app"
+    networks:
+      - "orders-network"
+
+  mysql:
+    image: mysql:8.0
+    container_name: orders-mysql
+    restart: unless-stopped
+    volumes:
+        - orders-mysql-data:/var/lib/mysql
+    environment:
+        MYSQL_DATABASE: '${DB_DATABASE}'
+        MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+    ports:
+        - "${HOST_DB_PORT:-3306}:3306"
+    healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "-psecret"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+    networks:
+        - orders-network
+
+  mailer:
+    image: axllent/mailpit:latest
+    container_name: orders-mailer
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - orders-network
+
+networks:
+  orders-network:
+    driver: bridge
+
+volumes:
+  orders-mysql-data:
+    driver: local

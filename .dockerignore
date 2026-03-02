@@ -1,0 +1,82 @@
+# Dependencies
+/node_modules
+/vendor
+
+# Environment & Config
+.env
+.env.*
+!.env.example
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE & Editor
+.idea
+.vscode
+*.swp
+*.swo
+*~
+.DS_Store
+.phpunit.result.cache
+*.sublime-project
+*.sublime-workspace
+
+# Laravel Storage
+/storage/*.key
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/testing/*
+/storage/framework/views/*
+!storage/app/.gitignore
+!storage/framework/.gitignore
+!storage/framework/cache/.gitignore
+!storage/logs/.gitignore
+
+# Build & Cache
+/bootstrap/cache/*
+!bootstrap/cache/.gitignore
+/public/hot
+/public/storage
+/public/build
+
+# Testing
+/tests
+/.phpunit.cache
+phpunit.xml
+.phpunit.result.cache
+
+# Documentation
+README.md
+*.md
+!README.md
+
+# Docker
+docker-compose*.yml
+docker-compose*.yaml
+Dockerfile*
+.dockerignore
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml
+
+# NPM & Yarn
+npm-debug.log
+yarn-error.log
+yarn.lock
+
+# Composer (mantener composer.lock para reproducibilidad)
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Misc
+*.log
+*.bak
+*.tmp
+.editorconfig

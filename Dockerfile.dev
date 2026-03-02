@@ -1,0 +1,87 @@
+FROM dunglas/frankenphp:php8.3-alpine
+
+LABEL maintainer="Rommel" \
+      description="Docker image for Laravel Gymdesk App - Alpine" \
+      version="2.0"
+
+ENV TZ=America/Guayaquil \
+    HTTP_PORT=${APP_PORT:-8000} \
+    COMPOSER_ALLOW_SUPERUSER=1 \
+    COMPOSER_NO_INTERACTION=1
+
+RUN apk add --no-cache tzdata \
+    && cp /usr/share/zoneinfo/${TZ} /etc/localtime \
+    && echo ${TZ} > /etc/timezone \
+    && apk del tzdata
+
+RUN apk add --no-cache \
+    curl \
+    ca-certificates \
+    zip \
+    unzip \
+    git \
+    supervisor \
+    libcap \
+    wget \
+    nano \
+    bash \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
+    libzip-dev \
+    icu-dev \
+    oniguruma-dev \
+    libxml2-dev \
+    postgresql-dev \
+    sqlite-dev \
+    # Build tools (mantener en DEV para instalar extensiones si es necesario)
+    autoconf \
+    g++ \
+    make \
+    linux-headers \
+    # Database clients
+    mysql-client \
+    postgresql-client \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) \
+        pdo \
+        pdo_mysql \
+        pdo_pgsql \
+        pgsql \
+        zip \
+        bcmath \
+        intl \
+        mbstring \
+        xml \
+        soap \
+        gd \
+        exif \
+        pcntl \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug \
+    && rm -rf /tmp/pear /var/cache/apk/*
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+COPY . .
+
+RUN composer install --prefer-dist --optimize-autoloader
+
+COPY ./etc/php/php.dev.ini $PHP_INI_DIR/conf.d/99-custom.ini
+COPY ./etc/php/xdebug.ini $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
+
+RUN addgroup -g 1000 gymdesk \
+    && adduser -u 1000 -G gymdesk -s /bin/bash -D gymdesk
+
+RUN mkdir -p /app/storage /app/bootstrap/cache \
+    && chown -R gymdesk:gymdesk /app
+
+USER gymdesk
+
+WORKDIR /app
+
+COPY --chown=gymdesk:gymdesk . /app
+
+EXPOSE ${HTTP_PORT}
+
+ENTRYPOINT [ "frankenphp", "run", "-c", "/app/Caddyfile" ]
