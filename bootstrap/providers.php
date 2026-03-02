@@ -2,4 +2,5 @@
 
 return [
     App\Providers\AppServiceProvider::class,
+    Src\Orders\Infrastructure\Providers\OrdersProvider::class,
 ];
