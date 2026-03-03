@@ -24,8 +24,8 @@ class OrdersController extends Controller
     {
         try {
             $orders = $this->getOrdersUseCase->execute(
-                dateFrom: $request->query('date_from'),
-                dateTo: $request->query('date_to'),
+                dateFrom: $request->query('desde'),
+                dateTo: $request->query('hasta'),
                 minTotal: $request->query('min_total') ? (float)$request->query('min_total') : null
             );
 

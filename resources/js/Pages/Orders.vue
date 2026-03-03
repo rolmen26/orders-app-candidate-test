@@ -63,7 +63,8 @@
                             <div
                                 v-for="order in orders"
                                 :key="order.id"
-                                class="border rounded-lg p-4 hover:shadow-md transition cursor-pointer"
+                                @click="openOrderDetails(order.id)"
+                                class="border rounded-lg p-4 hover:shadow-lg hover:border-blue-300 transition-all cursor-pointer"
                             >
                                 <div class="flex justify-between items-start">
                                     <div>
@@ -108,8 +109,15 @@
 
         <!-- Order Details Modal -->
         <Modal :show="showDetailsModal" @close="closeDetailsModal">
-            <div class="p-6" v-if="selectedOrder">
-                <h3 class="text-xl font-bold mb-4">Detalle del Pedido #{{ selectedOrder.order.id }}</h3>
+            <div class="p-6">
+                <!-- Loading State -->
+                <div v-if="loadingDetails" class="text-center py-12">
+                    <p class="text-gray-600">Cargando detalles del pedido...</p>
+                </div>
+
+                <!-- Order Details -->
+                <div v-else-if="selectedOrder">
+                    <h3 class="text-xl font-bold mb-4">Detalle del Pedido #{{ selectedOrder.order.id }}</h3>
 
                 <!-- Order Header Info -->
                 <div class="mb-6 p-4 bg-gray-50 rounded">
@@ -185,6 +193,7 @@
                         Cerrar
                     </button>
                 </div>
+                </div>
             </div>
         </Modal>
     </AuthenticatedLayout>
@@ -211,6 +220,7 @@ interface Order {
 
 const orders = ref<Order[]>([]);
 const loading = ref(false);
+const loadingDetails = ref(false);
 const filters = ref({
     dateFrom: '',
     dateTo: '',
@@ -235,6 +245,21 @@ const loadOrders = async () => {
         alert('Error al cargar pedidos');
     } finally {
         loading.value = false;
+    }
+};
+
+const openOrderDetails = async (orderId: number) => {
+    try {
+        loadingDetails.value = true;
+        showDetailsModal.value = true;
+        const response = await axios.get(`/api/pedidos/${orderId}`);
+        selectedOrder.value = response.data;
+    } catch (error) {
+        console.error('Error loading order details:', error);
+        alert('Error al cargar los detalles del pedido');
+        showDetailsModal.value = false;
+    } finally {
+        loadingDetails.value = false;
     }
 };
 

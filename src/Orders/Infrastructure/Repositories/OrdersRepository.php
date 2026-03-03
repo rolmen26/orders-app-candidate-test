@@ -2,7 +2,7 @@
 
 namespace Src\Orders\Infrastructure\Repositories;
 
-use Src\Orders\Domain\Interfaces\OrdersRepositoryInterface;
+use Src\Orders\Domain\Contracts\OrdersRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 
 class OrdersRepository implements OrdersRepositoryInterface

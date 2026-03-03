@@ -2,15 +2,20 @@
 
 namespace Src\Orders\Application\UseCases\Products;
 
-use Illuminate\Support\Facades\DB;
+use Src\Orders\Domain\Contracts\ProductsRepositoryInterface;
 
 class GetProductByIdUseCase
 {
+    public function __construct(
+        private readonly ProductsRepositoryInterface $productsRepository
+    ) {
+    }
+
     public function execute(int $productId): ?object
     {
-        $result = DB::select('CALL sp_get_product_by_id(?)', [$productId]);
+        $product = $this->productsRepository->findById($productId);
 
-        return $result[0] ?? null;
+        return $product ? (object)$product : null;
     }
 }
 

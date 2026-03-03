@@ -2,10 +2,15 @@
 
 namespace Src\Orders\Application\UseCases\Products;
 
-use Illuminate\Support\Facades\DB;
+use Src\Orders\Domain\Contracts\ProductsRepositoryInterface;
 
 class GetProductsUseCase
 {
+    public function __construct(
+        private readonly ProductsRepositoryInterface $productsRepository
+    ) {
+    }
+
     public function execute(
         ?string $search = '',
         ?string $sortBy = 'id',
@@ -13,26 +18,26 @@ class GetProductsUseCase
         int $page = 1,
         int $perPage = 15
     ): array {
-        $pdo = DB::connection()->getPdo();
+        $result = $this->productsRepository->paginate(
+            $search,
+            $sortBy,
+            $sortOrder,
+            $page,
+            $perPage
+        );
 
-        $stmt = $pdo->prepare('CALL sp_get_products(?, ?, ?, ?, ?)');
-        $stmt->execute([$search, $sortBy, $sortOrder, $page, $perPage]);
-
-        $totalResult = $stmt->fetch(\PDO::FETCH_OBJ);
-        $total = $totalResult->total ?? 0;
-
-        $stmt->nextRowset();
-
-        $products = $stmt->fetchAll(\PDO::FETCH_OBJ);
-
-        $stmt->closeCursor();
+        $total = (int)($result['total'] ?? 0);
+        $data = array_map(
+            static fn (array $row) => (object)$row,
+            $result['data'] ?? []
+        );
 
         return [
-            'data' => $products,
+            'data' => $data,
             'total' => $total,
             'page' => $page,
             'per_page' => $perPage,
-            'last_page' => ceil($total / $perPage)
+            'last_page' => $perPage > 0 ? (int)ceil($total / $perPage) : 0,
         ];
     }
 }
