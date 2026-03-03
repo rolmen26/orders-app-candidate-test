@@ -3,6 +3,10 @@
 namespace Src\Orders\Infrastructure\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Src\Orders\Domain\Interfaces\OrdersRepositoryInterface;
+use Src\Orders\Domain\Interfaces\ProductsRepositoryInterface;
+use Src\Orders\Infrastructure\Repositories\OrdersRepository;
+use Src\Orders\Infrastructure\Repositories\ProductsRepository;
 
 class OrdersProvider extends ServiceProvider
 {
@@ -11,7 +15,8 @@ class OrdersProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(OrdersRepositoryInterface::class, OrdersRepository::class);
+        $this->app->singleton(ProductsRepositoryInterface::class, ProductsRepository::class);
     }
 
     /**
