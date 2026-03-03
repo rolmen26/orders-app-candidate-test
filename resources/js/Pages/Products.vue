@@ -209,18 +209,23 @@ const loadProducts = async () => {
         const response = await axios.get('/api/productos', {
             params: {
                 search: searchQuery.value,
-                sort: sortBy.value,
-                order: sortOrder.value,
+                sort_by: sortBy.value,
+                sort_order: sortOrder.value,
                 page: pagination.value.current_page,
                 per_page: pagination.value.per_page
             }
         });
-        products.value = response.data.data;
+        const rawProducts = response.data.data ?? [];
+        const perPage = response.data.per_page ?? pagination.value.per_page;
+        const totalFromApi = response.data.total ?? rawProducts.length;
+        const total = Math.max(totalFromApi, rawProducts.length);
+
+        products.value = rawProducts.slice(0, perPage);
         pagination.value = {
-            current_page: response.data.current_page,
-            last_page: response.data.last_page,
-            per_page: response.data.per_page,
-            total: response.data.total
+            current_page: response.data.page ?? pagination.value.current_page,
+            last_page: perPage > 0 ? Math.ceil(total / perPage) : 0,
+            per_page: perPage,
+            total: total
         };
     } catch (error) {
         console.error('Error loading products:', error);
@@ -239,6 +244,7 @@ const debounceSearch = () => {
 };
 
 const changePage = (page: number) => {
+    if (page < 1 || page > pagination.value.last_page) return;
     pagination.value.current_page = page;
     loadProducts();
 };
