@@ -18,6 +18,16 @@ return new class extends Migration
             $table->float('price');
             $table->integer('stock')->default(0);
             $table->timestampsTz();
+
+            // Indexes
+            $table->index('sku', 'idx_sku');
+            $table->index('name', 'idx_name');
+            $table->index('price', 'idx_price');
+
+            // Engine and Charset
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
         });
     }
 

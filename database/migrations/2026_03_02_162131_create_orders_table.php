@@ -20,6 +20,17 @@ return new class extends Migration
             $table->decimal('total', 10, 2);
             $table->enum('status', ['pending', 'completed', 'cancelled'])->default('pending');
             $table->timestampsTz();
+
+            // Indexes
+            $table->index('user_id', 'idx_user_id');
+            $table->index('status', 'idx_status');
+            $table->index('created_at', 'idx_created_at');
+            $table->index('total', 'idx_total');
+
+            // Engine and Charset
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
         });
     }
 

@@ -19,6 +19,15 @@ return new class extends Migration
             $table->decimal('unit_price', 10, 2);
             $table->decimal('subtotal', 10, 2);
             $table->timestampsTz();
+
+            // Indexes
+            $table->index('order_id', 'idx_order_id');
+            $table->index('product_id', 'idx_product_id');
+
+            // Engine and Charset
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
         });
     }
 
