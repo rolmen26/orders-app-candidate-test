@@ -40,20 +40,20 @@ BEGIN
     -- Get total count
 SELECT COUNT(*) as total
 FROM products_catalog
-WHERE (p_search = '' OR name LIKE CONCAT('%', p_search, '%') OR sku LIKE CONCAT('%', p_search, '%'));
+WHERE (p_search = '' OR name COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', p_search, '%') COLLATE utf8mb4_unicode_ci OR sku COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', p_search, '%') COLLATE utf8mb4_unicode_ci);
 
 -- Get products
 IF p_sort_by = 'name' THEN
         IF p_sort_order = 'DESC' THEN
 SELECT id, sku, name, price, stock, created_at, updated_at
 FROM products_catalog
-WHERE (p_search = '' OR name LIKE CONCAT('%', p_search, '%') OR sku LIKE CONCAT('%', p_search, '%'))
+WHERE (p_search = '' OR name COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', p_search, '%') COLLATE utf8mb4_unicode_ci OR sku COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', p_search, '%') COLLATE utf8mb4_unicode_ci)
 ORDER BY name DESC
     LIMIT p_per_page OFFSET v_offset;
 ELSE
 SELECT id, sku, name, price, stock, created_at, updated_at
 FROM products_catalog
-WHERE (p_search = '' OR name LIKE CONCAT('%', p_search, '%') OR sku LIKE CONCAT('%', p_search, '%'))
+WHERE (p_search = '' OR name COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', p_search, '%') COLLATE utf8mb4_unicode_ci OR sku COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', p_search, '%') COLLATE utf8mb4_unicode_ci)
 ORDER BY name ASC
     LIMIT p_per_page OFFSET v_offset;
 END IF;
@@ -61,13 +61,13 @@ END IF;
         IF p_sort_order = 'DESC' THEN
 SELECT id, sku, name, price, stock, created_at, updated_at
 FROM products_catalog
-WHERE (p_search = '' OR name LIKE CONCAT('%', p_search, '%') OR sku LIKE CONCAT('%', p_search, '%'))
+WHERE (p_search = '' OR name COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', p_search, '%') COLLATE utf8mb4_unicode_ci OR sku COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', p_search, '%') COLLATE utf8mb4_unicode_ci)
 ORDER BY price DESC
     LIMIT p_per_page OFFSET v_offset;
 ELSE
 SELECT id, sku, name, price, stock, created_at, updated_at
 FROM products_catalog
-WHERE (p_search = '' OR name LIKE CONCAT('%', p_search, '%') OR sku LIKE CONCAT('%', p_search, '%'))
+WHERE (p_search = '' OR name COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', p_search, '%') COLLATE utf8mb4_unicode_ci OR sku COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', p_search, '%') COLLATE utf8mb4_unicode_ci)
 ORDER BY price ASC
     LIMIT p_per_page OFFSET v_offset;
 END IF;
@@ -75,13 +75,13 @@ ELSE
         IF p_sort_order = 'DESC' THEN
 SELECT id, sku, name, price, stock, created_at, updated_at
 FROM products_catalog
-WHERE (p_search = '' OR name LIKE CONCAT('%', p_search, '%') OR sku LIKE CONCAT('%', p_search, '%'))
+WHERE (p_search = '' OR name COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', p_search, '%') COLLATE utf8mb4_unicode_ci OR sku COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', p_search, '%') COLLATE utf8mb4_unicode_ci)
 ORDER BY id DESC
     LIMIT p_per_page OFFSET v_offset;
 ELSE
 SELECT id, sku, name, price, stock, created_at, updated_at
 FROM products_catalog
-WHERE (p_search = '' OR name LIKE CONCAT('%', p_search, '%') OR sku LIKE CONCAT('%', p_search, '%'))
+WHERE (p_search = '' OR name COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', p_search, '%') COLLATE utf8mb4_unicode_ci OR sku COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', p_search, '%') COLLATE utf8mb4_unicode_ci)
 ORDER BY id ASC
     LIMIT p_per_page OFFSET v_offset;
 END IF;
