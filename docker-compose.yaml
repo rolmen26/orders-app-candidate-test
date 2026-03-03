@@ -45,11 +45,6 @@ services:
         MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
     ports:
         - "${HOST_DB_PORT:-3306}:3306"
-    healthcheck:
-        test: ["CMD", "mysqladmin", "ping", "-psecret"]
-        interval: 10s
-        timeout: 5s
-        retries: 5
     networks:
         - orders-network
 

@@ -39,6 +39,24 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink
+                                    :href="route('productos')"
+                                    :active="route().current('productos')"
+                                >
+                                    Productos
+                                </NavLink>
+                                <NavLink
+                                    :href="route('checkout')"
+                                    :active="route().current('checkout')"
+                                >
+                                    Checkout
+                                </NavLink>
+                                <NavLink
+                                    :href="route('pedidos')"
+                                    :active="route().current('pedidos')"
+                                >
+                                    Pedidos
+                                </NavLink>
                             </div>
                         </div>
 
@@ -145,6 +163,24 @@ const showingNavigationDropdown = ref(false);
                             :active="route().current('dashboard')"
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('productos')"
+                            :active="route().current('productos')"
+                        >
+                            Productos
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('checkout')"
+                            :active="route().current('checkout')"
+                        >
+                            Checkout
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('pedidos')"
+                            :active="route().current('pedidos')"
+                        >
+                            Pedidos
                         </ResponsiveNavLink>
                     </div>
 
