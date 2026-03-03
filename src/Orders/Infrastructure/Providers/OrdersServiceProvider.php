@@ -3,12 +3,12 @@
 namespace Src\Orders\Infrastructure\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Src\Orders\Domain\Interfaces\OrdersRepositoryInterface;
-use Src\Orders\Domain\Interfaces\ProductsRepositoryInterface;
+use Src\Orders\Domain\Contracts\OrdersRepositoryInterface;
+use Src\Orders\Domain\Contracts\ProductsRepositoryInterface;
 use Src\Orders\Infrastructure\Repositories\OrdersRepository;
 use Src\Orders\Infrastructure\Repositories\ProductsRepository;
 
-class OrdersProvider extends ServiceProvider
+class OrdersServiceProvider extends ServiceProvider
 {
     /**
      * Register services.

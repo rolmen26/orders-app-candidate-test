@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Orders\Domain\Interfaces;
+namespace Src\Orders\Domain\Contracts;
 
 interface ProductsRepositoryInterface
 {
