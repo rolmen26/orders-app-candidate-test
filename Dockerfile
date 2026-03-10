@@ -51,6 +51,7 @@ RUN composer install \
 
 COPY . .
 
+FROM node:22.12.0-alpine3.21 AS frontend
 
 WORKDIR /app
 
@@ -69,7 +70,7 @@ LABEL maintainer="Rommel" \
       description="Docker image for Laravel Gymdesk App - Production with Nginx + Supervisor" \
       version="3.0"
 
-ENV TZ=America/Guayaquil \
+ENV TZ="America/Guayaquil" \
     HTTP_PORT=80 \
     OCTANE_PORT=8000
 

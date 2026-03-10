@@ -180,12 +180,29 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Modal from '@/Components/Modal.vue';
 import axios from 'axios';
 
-const products = ref([]);
+type Product = {
+    id: number;
+    sku: string;
+    name: string;
+    price: number;
+    stock: number;
+};
+
+type Pagination = {
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+};
+
+type ProductForm = Omit<Product, 'id'>;
+
+const products = ref<Product[]>([]);
 const loading = ref(false);
 const searchQuery = ref('');
 const sortBy = ref('id');
 const sortOrder = ref('ASC');
-const pagination = ref({
+const pagination = ref<Pagination>({
     current_page: 1,
     last_page: 1,
     per_page: 15,
@@ -193,8 +210,8 @@ const pagination = ref({
 });
 
 const showProductModal = ref(false);
-const editingProduct = ref(null);
-const productForm = ref({
+const editingProduct = ref<Product | null>(null);
+const productForm = ref<ProductForm>({
     sku: '',
     name: '',
     price: 0,
