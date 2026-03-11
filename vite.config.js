@@ -28,5 +28,6 @@ export default defineConfig({
         hmr: {
             host: 'localhost',
         }
-    }
+    },
+    base: '/build/',
 });

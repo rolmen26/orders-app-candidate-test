@@ -71,8 +71,8 @@ LABEL maintainer="Rommel" \
       version="3.0"
 
 ENV TZ="America/Guayaquil" \
-    HTTP_PORT=80 \
-    OCTANE_PORT=8000
+    HTTP_PORT=8080 \
+    OCTANE_PORT=9000
 
 RUN apk add --no-cache \
     tzdata \
